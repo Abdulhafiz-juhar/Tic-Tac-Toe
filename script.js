@@ -43,5 +43,62 @@ let Gameboard = (function () {
 })();
 
 // console.log(Gameboard.getBoard());
-
 // Gameboard.printBoard();
+
+let GameController = (function (
+  playerOneName = "Player One",
+  playerTwoName = "Player Two"
+) {
+  const board = Gameboard;
+
+  const players = [
+    {
+      name: playerOneName,
+      token: 1,
+    },
+    {
+      name: playerTwoName,
+      token: 2,
+    },
+  ];
+
+  let activePlayer = players[0];
+
+  const switchPlayerTurn = () => {
+    activePlayer = activePlayer === players[0] ? players[1] : players[0];
+  };
+  const getActivePlayer = () => activePlayer;
+
+  const printNewRound = () => {
+    board.printBoard();
+    console.log(`${getActivePlayer().name}'s turn.`);
+  };
+
+  const playRound = (row, column) => {
+    // Drop a token for the current player
+    console.log(
+      `Dropping ${getActivePlayer().name}'s token into column ${column}...`
+    );
+    board.dropToken(row, column, getActivePlayer().token);
+
+    /*  This is where we would check for a winner and handle that logic,
+          such as a win message. */
+
+    // Switch player turn
+    switchPlayerTurn();
+    printNewRound();
+  };
+
+  // Initial play game message
+  printNewRound();
+
+  // For the console version, we will only use playRound, but we will need
+  // getActivePlayer for the UI version, so I'm revealing it now
+  return {
+    playRound,
+    getActivePlayer,
+  };
+})();
+
+// i think i should create game function to put the gamebaord and
+// gamecontroller together
