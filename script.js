@@ -1,10 +1,11 @@
+// let Game = function () {
 let Gameboard = (function () {
   const rows = 3;
   const columns = 3;
   const board = [];
 
   function Cell() {
-    let value = 0;
+    let value;
 
     const addToken = (player) => {
       value = player;
@@ -75,6 +76,10 @@ let GameController = (function (
   };
 
   const playRound = (row, column) => {
+    if (board.getBoard()[row][column].getValue()) {
+      console.log(`${getActivePlayer().name} please choose an empty cell`);
+      return;
+    }
     console.log(
       `Dropping ${getActivePlayer().name}'s token into column ${
         column + 1
@@ -94,4 +99,9 @@ let GameController = (function (
     playRound,
     getActivePlayer,
   };
-})();
+})("abc", "xyz");
+
+//   return { Gameboard, GameController };
+// };
+
+// you can add the game function to event listener  and ....
