@@ -1,104 +1,102 @@
-let Gameboard = (function () {
-  const rows = 3;
-  const columns = 3;
-  const board = [];
+let Game = (function () {
+  let Gameboard = (function () {
+    const rows = 3;
+    const columns = 3;
+    const board = [];
 
-  function Cell() {
-    let value = 0;
+    function Cell() {
+      let value = 0;
 
-    const addToken = (player) => {
-      value = player;
-    };
-    const getValue = () => value;
+      const addToken = (player) => {
+        value = player;
+      };
+      const getValue = () => value;
 
-    return {
-      addToken,
-      getValue,
-    };
-  }
-
-  for (let i = 0; i < rows; i++) {
-    board[i] = [];
-    for (let j = 0; j < columns; j++) {
-      board[i].push(Cell());
+      return {
+        addToken,
+        getValue,
+      };
     }
-  }
 
-  const getBoard = () => board;
+    for (let i = 0; i < rows; i++) {
+      board[i] = [];
+      for (let j = 0; j < columns; j++) {
+        board[i].push(Cell());
+      }
+    }
 
-  const dropToken = (row, column, player) => {
-    const selectedCell = board[row][column];
-    if (!selectedCell) return;
-    selectedCell.addToken(player);
-  };
+    const getBoard = () => board;
 
-  const printBoard = () => {
-    const boardWithCellValues = board.map((row) =>
-      row.map((cell) => cell.getValue())
-    );
-    console.table(boardWithCellValues);
-  };
+    const dropToken = (row, column, player) => {
+      const selectedCell = board[row][column];
+      if (!selectedCell) return;
+      selectedCell.addToken(player);
+    };
 
-  return { getBoard, dropToken, printBoard };
-})();
+    const printBoard = () => {
+      const boardWithCellValues = board.map((row) =>
+        row.map((cell) => cell.getValue())
+      );
+      console.table(boardWithCellValues);
+    };
 
-// console.log(Gameboard.getBoard());
-// Gameboard.printBoard();
+    return { getBoard, dropToken, printBoard };
+  })();
 
-let GameController = (function (
-  playerOneName = "Player One",
-  playerTwoName = "Player Two"
-) {
-  const board = Gameboard;
+  // console.log(Gameboard.getBoard());
+  // Gameboard.printBoard();
 
-  const players = [
-    {
-      name: playerOneName,
-      token: 1,
-    },
-    {
-      name: playerTwoName,
-      token: 2,
-    },
-  ];
+  let GameController = (function (
+    playerOneName = "Player One",
+    playerTwoName = "Player Two"
+  ) {
+    const board = Gameboard;
 
-  let activePlayer = players[0];
+    const players = [
+      {
+        name: playerOneName,
+        token: "x",
+      },
+      {
+        name: playerTwoName,
+        token: "o",
+      },
+    ];
 
-  const switchPlayerTurn = () => {
-    activePlayer = activePlayer === players[0] ? players[1] : players[0];
-  };
-  const getActivePlayer = () => activePlayer;
+    let activePlayer = players[0];
 
-  const printNewRound = () => {
-    board.printBoard();
-    console.log(`${getActivePlayer().name}'s turn.`);
-  };
+    const switchPlayerTurn = () => {
+      activePlayer = activePlayer === players[0] ? players[1] : players[0];
+    };
+    const getActivePlayer = () => activePlayer;
 
-  const playRound = (row, column) => {
-    // Drop a token for the current player
-    console.log(
-      `Dropping ${getActivePlayer().name}'s token into column ${column}...`
-    );
-    board.dropToken(row, column, getActivePlayer().token);
+    const printNewRound = () => {
+      board.printBoard();
+      console.log(`${getActivePlayer().name}'s turn.`);
+    };
 
-    /*  This is where we would check for a winner and handle that logic,
-          such as a win message. */
+    const playRound = (row, column) => {
+      console.log(
+        `Dropping ${getActivePlayer().name}'s token into column ${column}...`
+      );
+      board.dropToken(row, column, getActivePlayer().token);
+      switchPlayerTurn();
+      printNewRound();
+    };
 
-    // Switch player turn
-    switchPlayerTurn();
+    // Initial play game message
     printNewRound();
-  };
 
-  // Initial play game message
-  printNewRound();
+    // For the console version, we will only use playRound, but we will need
+    // getActivePlayer for the UI version, so I'm revealing it now
+    return {
+      playRound,
+      getActivePlayer,
+    };
+  })();
 
-  // For the console version, we will only use playRound, but we will need
-  // getActivePlayer for the UI version, so I'm revealing it now
   return {
-    playRound,
-    getActivePlayer,
+    Gameboard,
+    GameController,
   };
 })();
-
-// i think i should create game function to put the gamebaord and
-// gamecontroller together
