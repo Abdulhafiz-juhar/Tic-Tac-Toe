@@ -86,7 +86,8 @@ let GameController = (function (
       } row ${row + 1}...`
     );
     board.dropToken(row, column, getActivePlayer().token);
-
+    //win logic
+    console.log(WinnerTokenChecker(board.getBoard()));
     switchPlayerTurn();
     printNewRound();
   };
@@ -107,12 +108,12 @@ let GameController = (function (
 
 // you can add the game function to event listener  and ....
 
-let WinnerTokenChecker = function (gameboard) {
+let WinnerTokenChecker = function (gameboardArray) {
   let winnerPlayer;
-  //   let BoardValues = function (board) {
-  //     return board.map((row) => row.map((cell) => cell.getValue()));
-  // };
-  //   let gameboardValues = BoardValues(gameboard)
+  let BoardValues = function (board) {
+    return board.map((row) => row.map((cell) => cell.getValue()));
+  };
+  let gameboard = BoardValues(gameboardArray);
 
   let straightChecker = function (enableColumn = 0) {
     for (
@@ -131,9 +132,9 @@ let WinnerTokenChecker = function (gameboard) {
         );
       }
 
-      let equalElements = elements.every(elements[0]);
+      let equalElements = elements.every((element) => element === elements[0]);
       if (equalElements) {
-        return elements[0].getValue();
+        return elements[0];
       }
     }
   };
@@ -143,9 +144,9 @@ let WinnerTokenChecker = function (gameboard) {
     for (let row = 0; row < gameboard.length; row++) {
       elements.push(gameboard[row][row]);
     }
-    let equalElements = elements.every(elements[0]);
+    let equalElements = elements.every((element) => element === elements[0]);
     if (equalElements) {
-      return elements[0].getValue();
+      return elements[0];
     }
   };
 
@@ -155,16 +156,22 @@ let WinnerTokenChecker = function (gameboard) {
     for (let row = 0; row < gameboard.length; row++) {
       elements.push(gameboard[row][column--]);
     }
-    let equalElements = elements.every(elements[0]);
+    let equalElements = elements.every((element) => element === elements[0]);
     if (equalElements) {
-      return elements[0].getValue();
+      return elements[0];
     }
   };
 
-  return;
+  winnerPlayer =
+    straightChecker() ||
+    straightChecker("for column") ||
+    leftDiagonalChecker() ||
+    rightDiagonalChecker();
+  return winnerPlayer;
 };
 
 //create win checker function separetely that takes 3 array element
 //and check that all are the same
 
+//dont forget the possibility of ties
 //many duplicate code that needs to be refactored
