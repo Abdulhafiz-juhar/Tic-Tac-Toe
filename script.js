@@ -86,6 +86,7 @@ let GameController = (function (
       } row ${row + 1}...`
     );
     board.dropToken(row, column, getActivePlayer().token);
+
     switchPlayerTurn();
     printNewRound();
   };
@@ -106,7 +107,7 @@ let GameController = (function (
 
 // you can add the game function to event listener  and ....
 
-let WinnerChecker = function (gameboard) {
+let WinnerTokenChecker = function (gameboard) {
   let winnerPlayer;
   //   let BoardValues = function (board) {
   //     return board.map((row) => row.map((cell) => cell.getValue()));
@@ -116,13 +117,13 @@ let WinnerChecker = function (gameboard) {
   let straightChecker = function (enableColumn = 0) {
     for (
       let row = 0;
-      row < (enableColumn ? board[0].length : board.length);
+      row < (enableColumn ? gameboard[0].length : gameboard.length);
       row++
     ) {
       let elements = [];
       for (
         let column = 0;
-        column < (enableColumn ? board.length : board[0].length);
+        column < (enableColumn ? gameboard.length : gameboard[0].length);
         column++
       ) {
         elements.push(
@@ -132,11 +133,38 @@ let WinnerChecker = function (gameboard) {
 
       let equalElements = elements.every(elements[0]);
       if (equalElements) {
-        return elements[0];
+        return elements[0].getValue();
       }
     }
   };
+
+  let leftDiagonalChecker = function () {
+    let elements = [];
+    for (let row = 0; row < gameboard.length; row++) {
+      elements.push(gameboard[row][row]);
+    }
+    let equalElements = elements.every(elements[0]);
+    if (equalElements) {
+      return elements[0].getValue();
+    }
+  };
+
+  let rightDiagonalChecker = function () {
+    let elements = [];
+    let column = gameboard.length - 1;
+    for (let row = 0; row < gameboard.length; row++) {
+      elements.push(gameboard[row][column--]);
+    }
+    let equalElements = elements.every(elements[0]);
+    if (equalElements) {
+      return elements[0].getValue();
+    }
+  };
+
+  return;
 };
 
 //create win checker function separetely that takes 3 array element
 //and check that all are the same
+
+//many duplicate code that needs to be refactored
