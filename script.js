@@ -105,3 +105,38 @@ let GameController = (function (
 // };
 
 // you can add the game function to event listener  and ....
+
+let WinnerChecker = function (gameboard) {
+  let winnerPlayer;
+  //   let BoardValues = function (board) {
+  //     return board.map((row) => row.map((cell) => cell.getValue()));
+  // };
+  //   let gameboardValues = BoardValues(gameboard)
+
+  let straightChecker = function (enableColumn = 0) {
+    for (
+      let row = 0;
+      row < (enableColumn ? board[0].length : board.length);
+      row++
+    ) {
+      let elements = [];
+      for (
+        let column = 0;
+        column < (enableColumn ? board.length : board[0].length);
+        column++
+      ) {
+        elements.push(
+          gameboard[enableColumn ? column : row][enableColumn ? row : column]
+        );
+      }
+
+      let equalElements = elements.every(elements[0]);
+      if (equalElements) {
+        return elements[0];
+      }
+    }
+  };
+};
+
+//create win checker function separetely that takes 3 array element
+//and check that all are the same
