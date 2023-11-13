@@ -87,7 +87,10 @@ let GameController = (function (
     );
     board.dropToken(row, column, getActivePlayer().token);
     //win logic
-    console.log(WinnerTokenChecker(board.getBoard()));
+    // console.log(WinnerTokenChecker(board.getBoard()));
+    let winnerToken = WinnerTokenChecker(board.getBoard()).getWinner();
+    let winnerPlayer = WinnerPlayerChecker(winnerToken, players);
+
     switchPlayerTurn();
     printNewRound();
   };
@@ -167,7 +170,23 @@ let WinnerTokenChecker = function (gameboardArray) {
     straightChecker("for column") ||
     leftDiagonalChecker() ||
     rightDiagonalChecker();
-  return winnerPlayer;
+
+  const getWinner = () => winnerPlayer;
+  return { getWinner };
+};
+
+let WinnerPlayerChecker = function (winnerToken, players) {
+  if (winnerToken) {
+    if (winnerToken === players[0].token) {
+      return players[0].name;
+    } else if (winnerToken === players[1].token) {
+      return players[1].name;
+    } else {
+      return "unknown player";
+    }
+  } else {
+    return "No winners yet";
+  }
 };
 
 //create win checker function separetely that takes 3 array element
