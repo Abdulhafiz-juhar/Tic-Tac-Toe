@@ -89,7 +89,14 @@ let GameController = (function (
     //win logic
     // console.log(WinnerTokenChecker(board.getBoard()));
     let winnerToken = WinnerTokenChecker(board.getBoard()).getWinner();
+    console.log(`WinnerToken is ${winnerToken}`);
     let winnerPlayer = WinnerPlayerChecker(winnerToken, players);
+    console.log(`WinnerPlayer is ${winnerPlayer}`);
+
+    if (!winnerToken || !winnerPlayer) {
+      let TieStatus = TieChecker(board.getBoard()).getTie();
+      console.log(`Tie is ${TieStatus}`);
+    }
 
     switchPlayerTurn();
     printNewRound();
@@ -188,9 +195,25 @@ let WinnerPlayerChecker = function (winnerToken, players) {
     return "No winners yet";
   }
 };
+let TieChecker = function (gameBoard) {
+  let isTie;
+  let BoardValues = function (board) {
+    return board.map((row) => row.map((cell) => cell.getValue()));
+  };
+  let boardArray = BoardValues(gameBoard);
 
+  const isEveryElementDefined = boardArray.every((row) =>
+    row.every((element) => element !== undefined)
+  );
+  isEveryElementDefined ? (isTie = true) : (isTie = false);
+  let getTie = () => isTie;
+
+  return { getTie };
+};
 //create win checker function separetely that takes 3 array element
 //and check that all are the same
 
 //dont forget the possibility of ties
 //many duplicate code that needs to be refactored
+//make BoardValues function to be added to a property of Gameboard
+//instead of declaring it and calling it everywhere
