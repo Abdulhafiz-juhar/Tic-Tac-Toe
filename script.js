@@ -99,6 +99,9 @@ let GameController = (function (
     if (!winnerToken || !winnerPlayer) {
       let TieStatus = TieChecker(board.getBoardValues()).getTie();
       console.log(`Tie is ${TieStatus}`);
+      if (TieStatus) {
+        RestartGame(board.getBoard());
+      }
     }
 
     switchPlayerTurn();
@@ -206,6 +209,14 @@ let TieChecker = function (gameBoard) {
   let getTie = () => isTie;
 
   return { getTie };
+};
+
+let RestartGame = function (board) {
+  for (let row = 0; row < board.length; row++) {
+    for (let column = 0; column < board[row].length; column++) {
+      board[row][column].addToken(undefined);
+    }
+  }
 };
 
 //many duplicate code that needs to be refactored
