@@ -100,7 +100,15 @@ let GameController = (function (
       let TieStatus = TieChecker(board.getBoardValues()).getTie();
       console.log(`Tie is ${TieStatus}`);
       if (TieStatus) {
-        RestartGame(board.getBoard());
+        let exitOrNot = prompt(
+          "It's a Tie!!! enter 'c' to continue or other key to exit"
+        );
+        if (exitOrNot === "c") {
+          RestartGame(board.getBoard());
+        } else {
+          console.log("Game Over!");
+          return;
+        }
       }
     }
 
