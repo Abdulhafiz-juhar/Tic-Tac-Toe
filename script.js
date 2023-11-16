@@ -110,6 +110,8 @@ let GameController = (function (
           return;
         }
       }
+    } else {
+      console.log(`Winner is ${winnerPlayer}!!!`);
     }
 
     switchPlayerTurn();
