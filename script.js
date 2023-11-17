@@ -232,3 +232,15 @@ let RestartGame = function (board) {
 //many duplicate code that needs to be refactored
 //make BoardValues function to be added to a property of Gameboard
 //instead of declaring it and calling it everywhere
+let GameDisplay = function () {
+  let cells = Array.from(document.querySelectorAll(".gameboard > *"));
+  cells.forEach((cell) => {
+    cell.addEventListener("click", function () {
+      this.textContent = GameController.getActivePlayer().token;
+    });
+  });
+
+  let getCell = function (row, column) {};
+};
+
+GameDisplay();
