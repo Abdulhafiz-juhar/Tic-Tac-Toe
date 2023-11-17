@@ -233,10 +233,26 @@ let RestartGame = function (board) {
 //make BoardValues function to be added to a property of Gameboard
 //instead of declaring it and calling it everywhere
 let GameDisplay = function () {
+  let activePlayerDisplay = document.querySelector(".activePlayer");
   let cells = Array.from(document.querySelectorAll(".gameboard > *"));
+
+  activePlayerDisplay.textContent = `${
+    GameController.getActivePlayer().name
+  }'s turn.`;
+
   cells.forEach((cell) => {
     cell.addEventListener("click", function () {
-      this.textContent = GameController.getActivePlayer().token;
+      let position = this.getAttribute("rowcol")
+        .split("")
+        .map((str) => Number(str));
+      let row = position[0];
+      let column = position[1];
+      GameController.playRound(row, column);
+
+      this.textContent = Gameboard.getBoard()[row][column].getValue();
+      activePlayerDisplay.textContent = `${
+        GameController.getActivePlayer().name
+      }'s turn.`;
     });
   });
 
