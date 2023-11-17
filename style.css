@@ -1,0 +1,13 @@
+.container {
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  place-items: center;
+}
+.gameboard {
+  display: grid;
+  grid-template: repeat(3, min-content) / repeat(3, min-content);
+}
+.gameboard > * {
+  border: 1px solid;
+  padding: 1rem;
+}
